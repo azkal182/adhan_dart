@@ -11,7 +11,7 @@ class TimeComponents {
     seconds = ((number - (hours + minutes / 60)) * 60 * 60).floor();
   }
 
-  DateTime utcDate(year, month, date) {
+  DateTime utcDate(int year, int month, int date) {
     return DateTime.utc(year, month, date, hours, minutes, seconds);
   }
 }

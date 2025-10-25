@@ -16,7 +16,7 @@ class SolarTime {
   late double sunrise;
   late double sunset;
 
-  SolarTime(date, coordinates) {
+  SolarTime(DateTime date, Coordinates coordinates) {
     double julianDay = Astronomical.julianDay(date.year, date.month, date.day, 0);
 
     observer = coordinates;
@@ -26,13 +26,13 @@ class SolarTime {
     nextSolar = SolarCoordinates(julianDay + 1);
 
     double m0 = Astronomical.approximateTransit(
-        coordinates.longitude, solar.apparentSiderealTime, solar.rightAscension);
+        coordinates.longitude, solar.apparentSiderealTime, solar.rightAscension!);
     const solarAltitude = -50.0 / 60.0;
 
     approxTransit = m0;
 
     transit = Astronomical.correctedTransit(m0, coordinates.longitude, solar.apparentSiderealTime,
-        solar.rightAscension, prevSolar.rightAscension, nextSolar.rightAscension);
+        solar.rightAscension!, prevSolar.rightAscension, nextSolar.rightAscension!);
 
     sunrise = Astronomical.correctedHourAngle(
         m0,
@@ -40,12 +40,12 @@ class SolarTime {
         coordinates,
         false,
         solar.apparentSiderealTime,
-        solar.rightAscension,
+        solar.rightAscension!,
         prevSolar.rightAscension,
-        nextSolar.rightAscension,
-        solar.declination,
+        nextSolar.rightAscension!,
+        solar.declination!,
         prevSolar.declination,
-        nextSolar.declination);
+        nextSolar.declination!);
 
     sunset = Astronomical.correctedHourAngle(
         m0,
@@ -53,30 +53,30 @@ class SolarTime {
         coordinates,
         true,
         solar.apparentSiderealTime,
-        solar.rightAscension,
+        solar.rightAscension!,
         prevSolar.rightAscension,
-        nextSolar.rightAscension,
-        solar.declination,
+        nextSolar.rightAscension!,
+        solar.declination!,
         prevSolar.declination,
-        nextSolar.declination);
+        nextSolar.declination!);
   }
 
-  double hourAngle(angle, afterTransit) {
+  double hourAngle(double angle, bool afterTransit) {
     return Astronomical.correctedHourAngle(
         approxTransit,
         angle,
         observer,
         afterTransit,
         solar.apparentSiderealTime,
-        solar.rightAscension,
+        solar.rightAscension!,
         prevSolar.rightAscension,
-        nextSolar.rightAscension,
-        solar.declination,
+        nextSolar.rightAscension!,
+        solar.declination!,
         prevSolar.declination,
-        nextSolar.declination);
+        nextSolar.declination!);
   }
 
-  double afternoon(shadowLength) {
+  double afternoon(double shadowLength) {
     // TODO source shadow angle calculation
     double tangent = (observer.latitude - solar.declination!).abs();
     double inverse = shadowLength + tan(degreesToRadians(tangent));

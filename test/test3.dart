@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:adhan_dart/adhan_dart.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -16,9 +18,8 @@ void main() {
   DateTime date = tz.TZDateTime.from(DateTime.now(), location);
   // set the time of date to 11:45 PM
 
-  final yesterday = date
-      .copyWith(hour: 23, minute: 00, second: 0)
-      .subtract(const Duration(days: 1));
+  final yesterday =
+      date.copyWith(hour: 23, minute: 00, second: 0).subtract(const Duration(days: 1));
 
   // current time in readable format
   print('Current Time: ${date.hour}:${date.minute}');
@@ -34,10 +35,7 @@ void main() {
   // params.madhab = Madhab.shafi;
   // params.highLatitudeRule = HighLatitudeRule.seventhOfTheNight;
   PrayerTimes prayerTimes = PrayerTimes(
-      coordinates: coordinates,
-      date: date,
-      calculationParameters: params,
-      precision: true);
+      coordinates: coordinates, date: date, calculationParameters: params, precision: true);
 
   SunnahTimes sunnahTimes = SunnahTimes(prayerTimes);
 

@@ -4,7 +4,7 @@ DateTime dateByAddingDays(DateTime date, int days) {
   return date.add(Duration(days: days));
 }
 
-DateTime dateByAddingMinutes(date, minutes) {
+DateTime dateByAddingMinutes(DateTime date, int minutes) {
   return dateByAddingSeconds(date, minutes * 60);
 }
 

@@ -48,7 +48,7 @@ class Astronomical {
   }
 
   /* The Sun's equation of the center in degrees. */
-  static double solarEquationOfTheCenter(julianCentury, meanAnomaly) {
+  static double solarEquationOfTheCenter(double julianCentury, meanAnomaly) {
     double T = julianCentury;
     /* Equation from Astronomical Algorithms page 164 */
     double mrad = degreesToRadians(meanAnomaly);
@@ -60,7 +60,7 @@ class Astronomical {
 
   /* The apparent longitude of the Sun, referred to the
         true equinox of the date. */
-  static double apparentSolarLongitude(julianCentury, meanLongitude) {
+  static double apparentSolarLongitude(double julianCentury, double meanLongitude) {
     double T = julianCentury;
     double l0 = meanLongitude;
     /* Equation from Astronomical Algorithms page 164 */
@@ -86,7 +86,8 @@ class Astronomical {
 
   /* The mean obliquity of the ecliptic, corrected for
         calculating the apparent position of the sun, in degrees. */
-  static double apparentObliquityOfTheEcliptic(julianCentury, meanObliquityOfTheEcliptic) {
+  static double apparentObliquityOfTheEcliptic(
+      double julianCentury, double meanObliquityOfTheEcliptic) {
     double T = julianCentury;
     double epsilon0 = meanObliquityOfTheEcliptic;
     /* Equation from Astronomical Algorithms page 165 */
@@ -107,7 +108,8 @@ class Astronomical {
     return unwindAngle(theta);
   }
 
-  static double nutationInLongitude(julianCentury, solarLongitude, lunarLongitude, ascendingNode) {
+  static double nutationInLongitude(
+      double julianCentury, double solarLongitude, double lunarLongitude, double ascendingNode) {
     double l0 = solarLongitude;
     double lp = lunarLongitude;
     double omega = ascendingNode;
@@ -119,7 +121,8 @@ class Astronomical {
     return term1 - term2 - term3 + term4;
   }
 
-  static double nutationInObliquity(julianCentury, solarLongitude, lunarLongitude, ascendingNode) {
+  static double nutationInObliquity(
+      double julianCentury, double solarLongitude, double lunarLongitude, double ascendingNode) {
     double l0 = solarLongitude;
     double lp = lunarLongitude;
     double omega = ascendingNode;
@@ -131,7 +134,8 @@ class Astronomical {
     return term1 + term2 + term3 - term4;
   }
 
-  static double altitudeOfCelestialBody(observerLatitude, declination, localHourAngle) {
+  static double altitudeOfCelestialBody(
+      double observerLatitude, double declination, double localHourAngle) {
     double phi = observerLatitude;
     double delta = declination;
     double H = localHourAngle;
@@ -142,7 +146,7 @@ class Astronomical {
     return radiansToDegrees(asin(term1 + term2));
   }
 
-  static double approximateTransit(longitude, siderealTime, rightAscension) {
+  static double approximateTransit(double longitude, double siderealTime, double rightAscension) {
     double L = longitude;
     double theta0 = siderealTime;
     double a2 = rightAscension;
@@ -152,8 +156,8 @@ class Astronomical {
   }
 
   /* The time at which the sun is at its highest point in the sky (in universal time) */
-  static double correctedTransit(approximateTransit, longitude, siderealTime, rightAscension,
-      previousRightAscension, nextRightAscension) {
+  static double correctedTransit(double approximateTransit, double longitude, double siderealTime,
+      double rightAscension, double? previousRightAscension, double nextRightAscension) {
     double m0 = approximateTransit;
     double L = longitude;
     double theta0 = siderealTime;
@@ -170,17 +174,17 @@ class Astronomical {
   }
 
   static double correctedHourAngle(
-      approximateTransit,
-      angle,
-      coordinates,
-      afterTransit,
-      siderealTime,
-      rightAscension,
-      previousRightAscension,
-      nextRightAscension,
-      declination,
-      previousDeclination,
-      nextDeclination) {
+      double? approximateTransit,
+      double angle,
+      dynamic coordinates,
+      bool afterTransit,
+      double siderealTime,
+      double rightAscension,
+      double? previousRightAscension,
+      double nextRightAscension,
+      double declination,
+      double? previousDeclination,
+      double nextDeclination) {
     double? m0 = approximateTransit;
     double h02 = angle;
     double theta0 = siderealTime;
@@ -219,9 +223,9 @@ class Astronomical {
         previous and next values and a factor
         equal to the fraction of the interpolated
         point's time over the time between values. */
-  static double? interpolate(y2, y1, y3, n) {
+  static double? interpolate(double y2, double? y1, double y3, double n) {
     /* Equation from Astronomical Algorithms page 24 */
-    double a = y2 - y1;
+    double a = y2 - (y1 ?? 0);
     double b = y3 - y2;
     double c = b - a;
     return y2 + ((n / 2) * (a + b + (n * c)));
@@ -229,16 +233,16 @@ class Astronomical {
 
   /* Interpolation of three angles, accounting for
         angle unwinding. */
-  static double? interpolateAngles(y2, y1, y3, n) {
+  static double? interpolateAngles(double y2, double? y1, double y3, double n) {
     /* Equation from Astronomical Algorithms page 24 */
-    double a = unwindAngle(y2 - y1);
+    double a = unwindAngle(y2 - (y1 ?? 0));
     double b = unwindAngle(y3 - y2);
     double c = b - a;
     return y2 + ((n / 2) * (a + b + (n * c)));
   }
 
   /* The Julian Day for the given Gregorian date components. */
-  static double julianDay(year, month, day, hours) {
+  static double julianDay(int year, int month, int day, double? hours) {
     /* Equation from Astronomical Algorithms page 60 */
     hours ??= 0;
 
@@ -265,7 +269,7 @@ class Astronomical {
   }
 
   /* Whether or not a year is a leap year (has 366 days). */
-  static bool isLeapYear(year) {
+  static bool isLeapYear(int year) {
     if (year % 4 != 0) {
       return false;
     }
