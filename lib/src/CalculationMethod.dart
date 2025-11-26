@@ -16,6 +16,7 @@ enum CalculationMethod {
   tehran,
   turkiye,
   ummAlQura,
+  indonesia,
 }
 
 /// Class holding the calculation parameters for each method
@@ -218,5 +219,18 @@ class CalculationMethodParameters {
         fajrAngle: 18.5,
         ishaAngle: 0,
         ishaInterval: 90);
+  }
+
+  /// Indonesia (Metode MUI atau ISNA)
+  ///
+  /// Settings:
+  /// - Fajr Angle: 20°
+  /// - Isha Angle: 18°
+  /// - Method Adjustments: Dhuhr +1min
+  static CalculationParameters indonesia() {
+    CalculationParameters params = CalculationParameters(
+        method: CalculationMethod.other, fajrAngle: 20, ishaAngle: 18);
+    params.methodAdjustments = {Prayer.dhuhr: 1};
+    return params;
   }
 }
