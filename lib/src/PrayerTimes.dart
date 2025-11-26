@@ -13,6 +13,9 @@ class PrayerTimes {
   Coordinates coordinates = const Coordinates(0, 0);
   CalculationParameters calculationParameters = CalculationMethodParameters.muslimWorldLeague();
 
+  /// Imsak prayer time
+  late DateTime imsak;
+
   /// Fajr prayer time
   late DateTime fajr;
 
@@ -210,6 +213,8 @@ class PrayerTimes {
     int ishaAdjustment = (calculationParameters.adjustments[Prayer.isha] ?? 0) +
         (calculationParameters.methodAdjustments[Prayer.isha] ?? 0);
 
+     imsak = dateByAddingMinutes(fajr, -10);
+
     fajr = roundedMinute(dateByAddingMinutes(fajrTime, fajrAdjustment), precision: precision);
     sunrise =
         roundedMinute(dateByAddingMinutes(sunriseTime, sunriseAdjustment), precision: precision);
@@ -223,6 +228,10 @@ class PrayerTimes {
         roundedMinute(dateByAddingMinutes(fajrafterTime, fajrAdjustment), precision: precision);
     ishaBefore =
         roundedMinute(dateByAddingMinutes(ishabeforeTime, ishaAdjustment), precision: precision);
+
+     // Mengurangi 10 menit dari Fajr untuk Imsak
+    imsak = dateByAddingMinutes(fajr, -10);
+
   }
 
   /// Returns the current prayer for the given date.
@@ -244,6 +253,8 @@ class PrayerTimes {
       return Prayer.sunrise;
     } else if (date.isAfter(fajr)) {
       return Prayer.fajr;
+    } else if (date.isAfter(imsak)) {  // Menambahkan kondisi untuk Imsak
+      return Prayer.imsak;
     } else {
       return Prayer.ishaBefore;
     }
@@ -266,6 +277,8 @@ class PrayerTimes {
       return Prayer.dhuhr;
     } else if (date.isAfter(fajr)) {
       return Prayer.sunrise;
+    } else if (date.isAfter(imsak)) {  // Menambahkan kondisi untuk Imsak
+      return Prayer.imsak;
     } else {
       return Prayer.fajr;
     }
@@ -290,6 +303,8 @@ class PrayerTimes {
         return ishaBefore;
       case Prayer.fajrAfter:
         return fajrAfter;
+      case Prayer.imsak:  // Menambahkan kasus untuk Imsak
+        return imsak;
     }
   }
 }
