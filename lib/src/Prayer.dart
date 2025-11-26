@@ -18,4 +18,5 @@ enum Prayer {
   isha,
   ishaBefore,
   fajrAfter,
+  imsak,
 }
