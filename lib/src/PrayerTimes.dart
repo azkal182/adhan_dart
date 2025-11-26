@@ -213,8 +213,6 @@ class PrayerTimes {
     int ishaAdjustment = (calculationParameters.adjustments[Prayer.isha] ?? 0) +
         (calculationParameters.methodAdjustments[Prayer.isha] ?? 0);
 
-     imsak = dateByAddingMinutes(fajr, -10);
-
     fajr = roundedMinute(dateByAddingMinutes(fajrTime, fajrAdjustment), precision: precision);
     sunrise =
         roundedMinute(dateByAddingMinutes(sunriseTime, sunriseAdjustment), precision: precision);
